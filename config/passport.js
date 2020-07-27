@@ -9,27 +9,27 @@ const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem');
 const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
 
 const options = {
-  jwtFrmRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: PUB_KEY,
-  algorithms: ['RS256'],
+    jwtFrmRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: PUB_KEY,
+    algorithms: ['RS256'],
 };
 
 module.exports = (passport) => {
-  passport.use(
-    new JwtStrategy(options, function (jwtPayload, done) {
-      console.log(jwtPayload);
+    passport.use(
+        new JwtStrategy(options, function(jwtPayload, done) {
+            console.log(jwtPayload);
 
-      //may need to change the _id prop to whatever is in our user model
-      db.User.findOne({ _id: jwtPayload.sub }, function (err, user) {
-        if (err) {
-          return done(err, false);
-        }
-        if (user) {
-          return done(null, user);
-        } else {
-          return done(null, false);
-        }
-      });
-    })
-  );
+            //may need to change the _id prop to whatever is in our user model
+            db.User.findOne({ _id: jwtPayload.sub }, function(err, user) {
+                if (err) {
+                    return done(err, false);
+                }
+                if (user) {
+                    return done(null, user);
+                } else {
+                    return done(null, false);
+                }
+            });
+        })
+    );
 };
