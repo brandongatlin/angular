@@ -14,20 +14,24 @@ app.use(express.static('public'));
 app.use(cors());
 // We need to use sessions to keep track of our user's login status
 app.use(
-  session({ secret: 'keyboard cat', resave: true, saveUninitialized: true })
+    session({ secret: 'keyboard cat', resave: true, saveUninitialized: true })
 );
 app.use(passport.initialize());
 app.use(passport.session());
 
+// app.get('/', function(req, res) {
+//     res.send('Group 1 API');
+// });
+
 require('./routes/api-routes.js')(app);
 require('./routes/post-api-routes.js')(app);
-
-db.sequelize.sync().then(function () {
-  app.listen(PORT, function () {
-    console.log(
-      '==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.',
-      PORT,
-      PORT
-    );
-  });
+app.use(express.static('dist'));
+db.sequelize.sync().then(function() {
+    app.listen(PORT, function() {
+        console.log(
+            '==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.',
+            PORT,
+            PORT
+        );
+    });
 });
