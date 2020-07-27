@@ -17,7 +17,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(__dirname + '/dist'));
+app.use(express.static(__dirname + '/dist/client'));
 require('./routes/api-routes.js')(app);
 require('./routes/post-api-routes.js')(app);
 app.get('/*', function(req, res) {
@@ -26,7 +26,7 @@ app.get('/*', function(req, res) {
 app.set('port', PORT);
 const server = http.createServer(app);
 db.sequelize.sync().then(function() {
-    server.listenn(PORT, function() {
+    server.listen(PORT, function() {
         console.log(
             '==> :earth_americas:  Listening on port %s. Visit http://localhost:%s/ in your browser.',
             PORT,
@@ -34,3 +34,5 @@ db.sequelize.sync().then(function() {
         );
     });
 });
+
+// h
